@@ -2,7 +2,8 @@
 
 **Feature Branch**: `001-idea-intake-deduplication`
 **Created**: 2026-05-05
-**Status**: Draft
+**Updated**: 2026-05-06
+**Status**: v0.3 – Ready for Planning
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -78,6 +79,18 @@ A team member wants to browse or search all prior submissions to understand the 
 1. **Given** submissions exist with various statuses, **When** an auditor calls `list()`, **Then** all submissions are returned regardless of status.
 2. **Given** an auditor provides a search query, **When** `search()` is called, **Then** semantically relevant submissions are returned ranked by similarity.
 
+### Edge Cases
+
+- What happens when the SoR adapter is unavailable at the moment of submission or search? (Deferred — see Assumptions; the answer must be specified before `plan.md` is written.)
+- What happens when the Match Engine returns more candidates than can be presented in a single conversational turn?
+- What happens when two users submit semantically identical ideas before either is persisted — i.e., the SoR has not yet recorded the first when the second search runs?
+- What happens when a user invokes the Skill manually but provides no meaningful content to extract a spec from (e.g., the session is empty or off-topic)?
+- What happens when required metadata fields (department, business area, OKR) cannot be inferred from the conversation and the user does not provide them?
+- What happens when the user does not respond to the verdict prompt — session ends or times out mid-flow?
+- What happens when the `comment()` call to the SoR adapter fails after the status update has already been applied?
+- What happens when the first submission is made to a completely empty SoR (no prior records to search against)?
+- What happens when the similarity threshold is misconfigured to 0.0 (all submissions match) or 1.0 (nothing matches)?
+
 ---
 
 ## Requirements _(mandatory)_
@@ -124,14 +137,14 @@ A team member wants to browse or search all prior submissions to understand the 
 
 ## Assumptions
 
-- The bare-bones spec template (the specific fields the Skill extracts from a conversation) is deferred and will be defined before `plan.md` is written.
+- **Bare-bones spec field sourcing**: FR-008 defines all required metadata fields. Of those, `title`, `summary`, `source agent`, and `timestamp` are auto-populated from the conversation context. `submitter` is taken from the authenticated session identity. `department`, `business area`, `priority`, `estimated effort`, `related OKR/initiative`, and `requested-by` are prompted interactively if they cannot be inferred. The Skill may default unresolvable fields to `"unknown"` and flag them for enrichment post-submission. This supersedes the earlier deferral.
 - Resubmission and versioning behaviour (new entry vs. update when a user revises after a match) is deferred.
-- The proactive-trigger heuristic (what conversational signals indicate ideation) and its false-positive tolerance are deferred.
-- The similarity threshold value and whether it is user-tunable are deferred.
+- The proactive-trigger heuristic (what conversational signals indicate ideation) and its false-positive tolerance are deferred; the manual-invocation path (FR-002) is the primary path for v1.
+- The similarity threshold default value and whether it is operator-tunable are deferred; the interface must accept a configurable threshold parameter.
 - Phase-2 PM-system matching scope (Linear, Jira specifics) is out of scope for this version.
 - Which adapter backends ship out of the box beyond Notion is deferred to the adapter portfolio decision.
 - Auth and identity mechanics for the Skill-to-adapter path are deferred.
 - Retention policy is deferred.
-- Behaviour when the SoR is unavailable is deferred.
+- Behaviour when the SoR is unavailable is deferred; the answer must be specified before `plan.md` is written (see Edge Cases above).
 - For adapters with weak native search, a fallback embedding/index layer may be needed; the design of that layer is deferred.
 - Expected submission volume is unknown; no throughput or latency SLAs are set for this version.

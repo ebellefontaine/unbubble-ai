@@ -2,7 +2,7 @@
  
 > Catch duplicate work before it starts. AI-powered idea intake and deduplication, with a pluggable system of record.
  
-**Status:** 🟡 Pre-alpha — spec stage. No implementation yet. See [`spec.md`](./spec.md) for the v0.2 draft.
+**Status:** 🟡 Pre-alpha — spec stage. No implementation yet. See [`spec.md`](./.specify/specs/001-idea-intake-deduplication/spec.md) for the v0.2 draft.
  
 ---
  
@@ -71,7 +71,7 @@ Adapter selection is configuration-driven. Swapping the backend does not require
 - **Phase 1 (v1):** Claude Skill + Notion reference adapter + match against prior submissions.
 - **Phase 2:** Cross-system match against active work in PM tools (Linear, Jira).
 - **Phase 3+:** Additional reference adapters, configurable similarity thresholds, fallback embedding/index layer for backends with weak native search.
-Open items are tracked in [`spec.md` § Deferred / Open](./spec.md#deferred--open).
+Open items are tracked in [`spec.md` § Deferred / Open](./.specify/specs/001-idea-intake-deduplication/spec.md#deferred--open).
  
 ## Project status & non-goals
  
@@ -84,7 +84,7 @@ This version explicitly does **not** include:
  
 Contributions are welcome once v1 lands. For now, the most useful contributions are:
  
-- Feedback on [`spec.md`](./spec.md) — open an issue if anything is unclear, missing, or wrong.
+- Feedback on [`spec.md`](./.specify/specs/001-idea-intake-deduplication/spec.md) — open an issue if anything is unclear, missing, or wrong.
 - Adapter design proposals — especially how to handle `search` for backends without strong native search.
 ## License
  
